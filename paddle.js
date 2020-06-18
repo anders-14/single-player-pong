@@ -1,7 +1,7 @@
 class Paddle {
   constructor() {
     this.w = wallWidth;
-    this.h = 200;
+    this.h = paddleHeight;
     this.minH = 50;
     this.pos = createVector(width - this.w, mouseY - this.h / 2);
   }
@@ -17,12 +17,12 @@ class Paddle {
     } else if (y > height - this.h) {
       y = height - this.h;     
     }
-      this.pos = createVector(width - this.w, y);
+    this.pos.y = y;
   }
 
   shrink = () => this.h > this.minH ? this.h -= 10 : this.h = this.minH;
 
   reset() {
-    this.h = 100;
+    this.h = paddleHeight;
   }
 }

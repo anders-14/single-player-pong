@@ -3,7 +3,7 @@ class Ball {
     this.r = 16;
     this.d = this.r * 2;
     this.pos = createVector(width - this.r - paddleSpace, height / 2);
-    this.vel = createVector(random(3, 5) * -1, random(3, 5));
+    this.vel = createVector(0, 0);
   }
 
   show() {
@@ -14,15 +14,20 @@ class Ball {
     if (this.leftEdge()) this.turnX();
     else if (this.topEdge() || this.bottomEdge()) this.turnY();
     else if (this.rightEdge()) {
-      this.removeVel();
-      changeColor([255, 0, 0]);
+      gameOver = true;
     }
     this.applyForce();
   }
 
+  start() {
+    if (!started) {
+      this.vel.x = -5;
+      this.vel.y = Math.random() < 0.5 ? -5 : 5;
+    }
+  }
+
   applyForce() {
-    this.pos.x += this.vel.x;
-    this.pos.y += this.vel.y;
+    this.pos.add(this.vel);
   }
 
   leftEdge = () => this.pos.x - this.r <= wallWidth;
@@ -32,8 +37,10 @@ class Ball {
 
   turnX = () => this.vel.x *= -1;
   turnY = () => this.vel.y *= -1;
-  removeVel = () => {
-    this.vel.x = this.vel.y = 0;
+  
+  speedUp() {
+    this.vel.x += this.vel.x < 0 ? -1 : this.vel.x > 0 ? 1 : 0;
+    this.vel.y += this.vel.y < 0 ? -1 : this.vel.y > 0 ? 1 : 0;
   }
 
   hitsPaddle(paddle) {
@@ -42,10 +49,9 @@ class Ball {
   }
 
   reset() {
-    this.pos.x = width - this.r - paddleSpace;
-    this.pos.y = height / 2;
-    this.vel.x = random(3, 5) * -1;
-    this.vel.y = random(3, 5);
+    this.pos = createVector(width - this.r - paddleSpace, height / 2);
+    this.vel = createVector(0, 0);
+    this.started = false;
   }
 
 }
