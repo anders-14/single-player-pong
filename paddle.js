@@ -1,16 +1,13 @@
 class Paddle {
   constructor() {
     this.w = wallWidth;
-    this.h = 100;
+    this.h = 200;
+    this.minH = 50;
     this.pos = createVector(width - this.w, mouseY - this.h / 2);
   }
 
   show() {
-    push();
-    noStroke();
-    fill(fgColor);
     rect(this.pos.x, this.pos.y, this.w, this.h);
-    pop();
   }
 
   update() {
@@ -21,5 +18,11 @@ class Paddle {
       y = height - this.h;     
     }
       this.pos = createVector(width - this.w, y);
+  }
+
+  shrink = () => this.h > this.minH ? this.h -= 10 : this.h = this.minH;
+
+  reset() {
+    this.h = 100;
   }
 }
